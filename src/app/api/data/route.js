@@ -1,23 +1,128 @@
 export async function GET(req) {
   const mockData = [
-      // 🟣 PLANNED
-      { id: 1, title: "AI-Powered Code Assistant", status: "Planned", lane: "AI Features", upvotes: 42, tags: ["AI", "Productivity"] },
-      { id: 2, title: "Dark Mode for Dashboard", status: "Planned", lane: "UI/UX", upvotes: 60, tags: ["UI/UX", "Design"] },
-      { id: 3, title: "Customizable Widgets", status: "Planned", lane: "Productivity", upvotes: 35, tags: ["Productivity", "UI/UX"] },
-      { id: 4, title: "Voice Command Integration", status: "Planned", lane: "Accessibility", upvotes: 18, tags: ["AI", "Accessibility"] },
+    // 🟣 PLANNED
+    { 
+      id: 1, 
+      title: "AI-Powered Code Assistant", 
+      description: "An AI-powered coding assistant designed to help developers write efficient and accurate code faster...",
+      status: "Planned", 
+      lane: "AI Features", 
+      upvotes: 42, 
+      tags: ["AI", "Productivity"],
+      comments: [
+        { id: 1, text: "This would be amazing for debugging!", author: "Alice" },
+        { id: 2, text: "Will this support multiple programming languages?", author: "Bob" }
+      ]
+    },
+    { 
+      id: 2, 
+      title: "Dark Mode for Dashboard", 
+      description: "Introducing a sleek and visually appealing dark mode theme...",
+      status: "Planned", 
+      lane: "UI/UX", 
+      upvotes: 60, 
+      tags: ["UI/UX", "Design"],
+      comments: [
+        { id: 1, text: "Dark mode is a game-changer! Can't wait for this.", author: "Charlie" },
+        { id: 2, text: "Will there be an option to auto-switch based on system settings?", author: "Dave" }
+      ]
+    },
+    {
+      id: 3,
+      title: "Voice Commands for Navigation",
+      description: "A feature that allows users to navigate the app hands-free using voice commands.",
+      status: "Planned",
+      lane: "Accessibility",
+      upvotes: 35,
+      tags: ["Accessibility", "Voice Control"],
+      comments: [
+        { id: 1, text: "This would make things so much easier for visually impaired users.", author: "Eva" },
+        { id: 2, text: "Will it support multiple languages?", author: "Frank" }
+      ]
+    },
 
-      // 🟡 IN PROGRESS
-      { id: 5, title: "Real-time Collaboration for Teams", status: "In Progress", lane: "Collaboration", upvotes: 85, tags: ["Collaboration", "Productivity"] },
-      { id: 6, title: "Smart Search with Filters", status: "In Progress", lane: "Search", upvotes: 22, tags: ["AI", "Search"] },
-      { id: 7, title: "Automated Bug Reporting Tool", status: "In Progress", lane: "QA & Testing", upvotes: 54, tags: ["QA", "Bugs"] },
-      { id: 8, title: "Live Game Score Tracking", status: "In Progress", lane: "Sports Features", upvotes: 31, tags: ["AI", "Productivity"] },
+    // 🟡 IN PROGRESS
+    { 
+      id: 5, 
+      title: "Real-time Collaboration for Teams", 
+      description: "A robust collaboration feature that enables team members to work together in real-time...",
+      status: "In Progress", 
+      lane: "Collaboration", 
+      upvotes: 85, 
+      tags: ["Collaboration", "Productivity"],
+      comments: [
+        { id: 1, text: "Would love to see inline comments for better collaboration.", author: "Grace" },
+        { id: 2, text: "Will there be a live cursor tracking feature as well?", author: "Helen" }
+      ]
+    },
+    {
+      id: 6,
+      title: "Drag-and-Drop Task Management",
+      description: "A flexible drag-and-drop feature to easily organize and manage tasks.",
+      status: "In Progress",
+      lane: "Project Management",
+      upvotes: 72,
+      tags: ["Productivity", "Task Management"],
+      comments: [
+        { id: 1, text: "I hope this includes customizable columns!", author: "Ian" },
+        { id: 2, text: "Will it allow task dependencies?", author: "Jack" }
+      ]
+    },
+    {
+      id: 7,
+      title: "Customizable Email Templates",
+      description: "Allows users to create and manage customized email templates for marketing campaigns.",
+      status: "In Progress",
+      lane: "Marketing",
+      upvotes: 50,
+      tags: ["Marketing", "Email"],
+      comments: [
+        { id: 1, text: "Can we include dynamic fields in the templates?", author: "Kate" },
+        { id: 2, text: "Would love to see A/B testing support as well.", author: "Leo" }
+      ]
+    },
 
-      // ✅ COMPLETED
-      { id: 9, title: "2-Factor Authentication", status: "Completed", lane: "Security", upvotes: 120, tags: ["Security", "User Management"] },
-      { id: 10, title: "Enhanced Notification System", status: "Completed", lane: "User Management", upvotes: 47, tags: ["UI/UX", "User Management"] },
-      { id: 11, title: "Multi-Language Support", status: "Completed", lane: "Localization", upvotes: 64, tags: ["UI/UX", "Productivity"] },
-      { id: 12, title: "Auto-Save Feature for Drafts", status: "Completed", lane: "Productivity", upvotes: 38, tags: ["Productivity", "Design"] },
+    // ✅ COMPLETED
+    { 
+      id: 9, 
+      title: "2-Factor Authentication", 
+      description: "An essential security upgrade that adds a second layer of protection to user accounts...",
+      status: "Completed", 
+      lane: "Security", 
+      upvotes: 120, 
+      tags: ["Security", "User Management"],
+      comments: [
+        { id: 1, text: "Great feature! Will there be backup codes as well?", author: "Maya" },
+        { id: 2, text: "Can I use an authenticator app instead of SMS?", author: "Noah" }
+      ]
+    },
+    {
+      id: 10,
+      title: "Export Data to CSV",
+      description: "A feature allowing users to export their data in CSV format for analysis and backup.",
+      status: "Completed",
+      lane: "Data Management",
+      upvotes: 55,
+      tags: ["Data Export", "Backup"],
+      comments: [
+        { id: 1, text: "Will this support large data exports efficiently?", author: "Olivia" },
+        { id: 2, text: "Can we schedule automated exports?", author: "Peter" }
+      ]
+    },
+    {
+      id: 11,
+      title: "Customizable User Roles",
+      description: "Admins can now assign customized roles and permissions to team members.",
+      status: "Completed",
+      lane: "Admin Features",
+      upvotes: 95,
+      tags: ["Admin", "Permissions"],
+      comments: [
+        { id: 1, text: "Can we define role hierarchies?", author: "Quinn" },
+        { id: 2, text: "Is there an audit log for permission changes?", author: "Ryan" }
+      ]
+    }
   ];
 
-  return Response.json(mockData, { status: 200 }); // ✅ Correct response syntax
+  return Response.json(mockData, { status: 200 });
 }
