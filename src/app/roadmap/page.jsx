@@ -169,13 +169,14 @@ export default function Roadmap() {
 }, [data, setPosts]);
 
 const handleUpvote = (id) => {
-  if (votedPosts.has(id)) {
+  const post = localPosts.find(post => post.id === id);
+
+  if (post.voted) {
     toast.error("You can only vote once for this post!");
     return;
   }
 
-  upvotePost(id);  // <-- Correctly updates Zustand store
-  setVotedPosts((prev) => new Set(prev).add(id));
+  upvotePost(id);
   toast.success("Voted successfully!");
 };
 
