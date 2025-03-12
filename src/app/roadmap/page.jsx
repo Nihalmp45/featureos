@@ -9,7 +9,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragOverlay
+  DragOverlay,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -18,7 +18,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import usePostStore  from "../api/store/store"
+import usePostStore from "../api/store/store";
 
 const fetchPosts = async () => {
   const response = await fetch("/api/data");
@@ -29,13 +29,8 @@ const fetchPosts = async () => {
 
 // Sortable Post Item Component
 function SortablePostItem({ post, onUpvote, onClick }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: post.id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: post.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -100,54 +95,70 @@ function SortablePostItem({ post, onUpvote, onClick }) {
 }
 
 // Container for each lane
-function DroppableLane({ laneName, status, color, icon, posts, onUpvote, onPostClick }) {
+function DroppableLane({
+  laneName,
+  status,
+  color,
+  icon,
+  posts,
+  onUpvote,
+  onPostClick,
+}) {
   return (
-    <div
-      className="border-[1px] bg-gray-100 border-gray-100 rounded-lg p-4 shadow-md min-h-[200px]"
-    >
+    <div className="border-[1px] bg-gray-100 border-gray-100 rounded-lg p-4 shadow-md min-h-[200px]">
       <h2
-  className={`font-bold text-lg mb-4 ${color} border-b-[2px] border-gray-200 pb-1 flex items-center gap-2 w-full`}
->
-  {icon && (
-    <div
-      style={{
-        background: icon.color,
-        mask: `url(${icon.url}) no-repeat center / contain`,
-        WebkitMask: `url(${icon.url}) no-repeat center / contain`,
-        height: "14px",
-        width: "14px",
-      }}
-    ></div>
-  )}
-  {laneName}
-</h2>
-      
+        className={`font-bold text-lg mb-4 ${color} border-b-[2px] border-gray-200 pb-1 flex items-center gap-2 w-full`}
+      >
+        {icon && (
+          <div
+            style={{
+              background: icon.color,
+              mask: `url(${icon.url}) no-repeat center / contain`,
+              WebkitMask: `url(${icon.url}) no-repeat center / contain`,
+              height: "14px",
+              width: "14px",
+            }}
+          ></div>
+        )}
+        {laneName}
+      </h2>
+
       {posts.length > 0 ? (
-        <SortableContext items={posts.map(post => post.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext
+          items={posts.map((post) => post.id)}
+          strategy={verticalListSortingStrategy}
+        >
           {posts.map((post) => (
-            <SortablePostItem 
-              key={post.id} 
-              post={post} 
-              onUpvote={onUpvote} 
-              onClick={onPostClick} 
+            <SortablePostItem
+              key={post.id}
+              post={post}
+              onUpvote={onUpvote}
+              onClick={onPostClick}
             />
           ))}
         </SortableContext>
       ) : (
-        <p className="text-gray-400">No items available</p>
+        <div className="flex flex-col items-center justify-center h-40 border border-gray-200 rounded-lg bg-gray-50">
+          <div className="text-gray-400 text-3xl mb-2">☰</div>
+          <p className="text-gray-400">No posts found</p>
+        </div>
       )}
     </div>
   );
 }
 
-export default function Roadmap() {
-  
+export default function Roadmap({ selectedTag }) {
   const { data, error, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
 
-  const { posts: localPosts, setPosts, updatePostStatus, upvotePost } = usePostStore();
+  const {
+    posts: localPosts,
+    setPosts,
+    updatePostStatus,
+    upvotePost,
+  } = usePostStore();
   const [votedPosts, setVotedPosts] = useState(new Set());
   const [selectedPost, setSelectedPost] = useState(null);
   const [activeId, setActiveId] = useState(null);
@@ -165,20 +176,26 @@ export default function Roadmap() {
   );
 
   useEffect(() => {
-    if (data) setPosts(data);
-}, [data, setPosts]);
+    if (data) {
+      const filteredPosts = selectedTag
+        ? data.filter((post) => post.tags.includes(selectedTag))
+        : data;
 
-const handleUpvote = (id) => {
-  const post = localPosts.find(post => post.id === id);
+      setPosts(filteredPosts);
+    }
+  }, [data, selectedTag, setPosts]);
 
-  if (post.voted) {
-    toast.error("You can only vote once for this post!");
-    return;
-  }
+  const handleUpvote = (id) => {
+    const post = localPosts.find((post) => post.id === id);
 
-  upvotePost(id);
-  toast.success("Voted successfully!");
-};
+    if (post.voted) {
+      toast.error("You can only vote once for this post!");
+      return;
+    }
+
+    upvotePost(id);
+    toast.success("Voted successfully!");
+  };
 
   const handlePostClick = (post) => {
     setSelectedPost(post);
@@ -217,7 +234,7 @@ const handleUpvote = (id) => {
 
   // Find which lane contains a post
   const findContainerLane = (id) => {
-    const post = localPosts.find(post => post.id === id);
+    const post = localPosts.find((post) => post.id === id);
     return post ? post.status : null;
   };
 
@@ -230,7 +247,7 @@ const handleUpvote = (id) => {
   // Handle drag end
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    
+
     if (!over) {
       setActiveId(null);
       return;
@@ -239,27 +256,30 @@ const handleUpvote = (id) => {
     // Find the containers for the source and destination
     const activeContainer = findContainerLane(active.id);
     // Find the destination lane
-    const overLane = lanes.find(lane => {
-      return localPosts.filter(post => post.status === lane.id)
-                      .some(post => post.id === over.id);
+    const overLane = lanes.find((lane) => {
+      return localPosts
+        .filter((post) => post.status === lane.id)
+        .some((post) => post.id === over.id);
     });
-    
+
     const overContainer = overLane ? overLane.id : findContainerLane(over.id);
-    
+
     if (activeContainer !== overContainer) {
       // Update the post's status
       updatePostStatus(active.id, overContainer);
-      
+
       // Show success notification
-      const post = localPosts.find(p => p.id === active.id);
+      const post = localPosts.find((p) => p.id === active.id);
       toast.success(`Moved "${post.title}" to ${overContainer}`);
     }
-    
+
     setActiveId(null);
   };
 
   // Find the currently active post
-  const activePost = activeId ? localPosts.find(post => post.id === activeId) : null;
+  const activePost = activeId
+    ? localPosts.find((post) => post.id === activeId)
+    : null;
 
   return (
     <DndContext
@@ -280,20 +300,20 @@ const handleUpvote = (id) => {
         "
       >
         <Toaster position="bottom-right" />
-        
-        {lanes.map(lane => (
+
+        {lanes.map((lane) => (
           <DroppableLane
             key={lane.id}
             laneName={lane.name}
             status={lane.id}
             color={lane.color}
             icon={lane.icon}
-            posts={localPosts.filter(post => post.status === lane.id)}
+            posts={localPosts.filter((post) => post.status === lane.id)}
             onUpvote={handleUpvote}
             onPostClick={handlePostClick}
           />
         ))}
-        
+
         {/* Drag Overlay */}
         <DragOverlay>
           {activeId && activePost ? (
@@ -324,7 +344,7 @@ const handleUpvote = (id) => {
             </div>
           ) : null}
         </DragOverlay>
-        
+
         {/* Integrated PostModal Component */}
         <PostModal
           key={selectedPost?.id}

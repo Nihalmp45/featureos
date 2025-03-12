@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import usePostStore from "../api/store/store";
+import { X } from "lucide-react"; // For the close icon
 
 export default function PostModal({ post, onClose }) {
   const { upvotePost, posts } = usePostStore();
-  const [localPost, setLocalPost] = useState(null); // Start with `null` instead of `post`
+  const [localPost, setLocalPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
   useEffect(() => {
     const updatedPost = posts.find((p) => p.id === post?.id);
     if (updatedPost) {
-      setLocalPost(updatedPost); // Always sync with store data
+      setLocalPost(updatedPost);
       setComments(updatedPost.comments || []);
     }
   }, [posts, post?.id]);
@@ -30,20 +31,19 @@ export default function PostModal({ post, onClose }) {
 
   const handleUpvote = () => {
     if (!localPost) return;
-  
+
     if (localPost.voted) {
       toast.error("You can only vote once for this post!");
       return;
     }
-  
-    upvotePost(localPost.id); // Zustand store manages the 'voted' state
+
+    upvotePost(localPost.id);
     toast.success("Voted successfully!");
   };
 
   if (!localPost) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return <div></div>;
   }
-
   return (
     <div
       className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50"
@@ -53,6 +53,14 @@ export default function PostModal({ post, onClose }) {
         className="bg-white rounded-lg w-full max-w-5xl p-8 shadow-2xl relative max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Close Button */}
+        <button
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          onClick={onClose}
+        >
+          <X className="w-6 h-6" />
+        </button>
+
         <div className="top-0 bg-white z-10 border-b border-gray-300 pb-4 mb-4">
           <div className="flex gap-8">
             <div className="flex items-center">
@@ -79,12 +87,26 @@ export default function PostModal({ post, onClose }) {
             <div className="flex-1">
               <h2 className="text-4xl font-bold">{localPost.title}</h2>
               <p className="text-gray-500 text-lg mt-2">{localPost.description}</p>
+
+              {/* Tags Section */}
+              {localPost.tags && localPost.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {localPost.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Comments Section */}
-        <div className="mt-10 border-t border-gray-300 pt-6">
+        <div className="mt-4">
           <h3 className="text-2xl font-semibold mb-4">Comments</h3>
 
           {comments.map((comment) => (
