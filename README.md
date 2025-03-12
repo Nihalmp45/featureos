@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FeatureOS - Interactive Roadmap
 
-## Getting Started
+FeatureOS is a project management tool built using **Next.js** which allows users to create and manage a visual interactive roadmap with drag-and-drop functionality. It provides real-time updates for project status, with a simple and intuitive user interface.
 
-First, run the development server:
+### Features:
+- **Interactive Roadmap**: Display project posts organized by their current status (Planned, In Progress, Completed).
+- **Drag-and-Drop**: Organize posts between different status categories using drag-and-drop.
+- **Upvote System**: Users can upvote posts to show support or popularity.
+- **Post Details Modal**: Click on a post to view more details in a modal popup and user can comment about the post.
+- **Responsive Design**: Mobile and desktop-friendly UI using **TailwindCSS**.
+- **Toast Notifications**: Inform users of actions like upvoting and status updates.
 
-```bash
-npm run dev
-# or
+### Technologies:
+- **Next.js** - For server-side rendering and static site generation.
+- **React** - For building the user interface.
+- **Zustand** - For Storing data.
+- **React-Query** - For fetching and managing data.
+- **Dnd-Kit** - For the drag-and-drop functionality.
+- **TailwindCSS** - For styling the components.
+- **MongoDB** - Database
+
+## Installation Guide
+
+To get started with FeatureOS, follow the steps below.
+
+### Prerequisites:
+Make sure you have **Node.js** (version 14 or higher) and **npm** (or **yarn**) installed on your machine. You can download Node.js from [here](https://nodejs.org/).
+
+### 1. Clone the Repository
+
+## git clone https://github.com/Nihalmp45/featureos.git
+## cd featureos
+
+
+### 2. Install Dependencies
+
+## npm install
+Or, if you prefer yarn:
+yarn install
+
+### 3. Set up MongoDB
+To set up MongoDB locally, follow these steps:
+
+If you don’t already have MongoDB installed, download MongoDB and install it locally. Ensure that your MongoDB service is running by starting it with:
+## mongod
+
+Alternatively, you can use MongoDB Atlas, a cloud-based MongoDB service. Create an account on MongoDB Atlas and set up a new cluster.
+
+### 4. Configure Environment Variables
+You need to set up your environment variables for the app to connect to MongoDB. Create a .env.local file in the root of your project and add the following environment variables:
+
+For local MongoDB (if running locally):
+
+## MONGODB_URI=mongodb://localhost:27017/featureos
+
+For MongoDB Atlas (if using the cloud service):
+
+Go to your MongoDB Atlas dashboard and create a new project and cluster.
+Add a new database user and assign them the required permissions.
+Get the connection string from the "Connect" option in MongoDB Atlas, and replace the placeholders with your username, password, and database name.
+
+## MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/featureos?retryWrites=true&w=m
+
+### 4. Additionally, add the following environment variables:
+
+## TOKEN_SECRET=nextjsproject
+## DOMAIN=http://localhost:3000
+
+### 5. Run the Development Server
+## npm run dev
+
+Or using yarn:
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The app will now be running at http://localhost:3000.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 6. Build for Production
+When you are ready to deploy, build the production version of the app:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## npm run build
+npm start
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Or using yarn:
+yarn build
+yarn start
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
