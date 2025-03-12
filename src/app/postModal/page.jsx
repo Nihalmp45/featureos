@@ -8,25 +8,45 @@ export default function PostModal({ post, onClose }) {
   const [localPost, setLocalPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [user, setUser] = useState(null); // Added user state
 
+  // Load comments when the component mounts
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) setUser(storedUser);
+
     const updatedPost = posts.find((p) => p.id === post?.id);
     if (updatedPost) {
       setLocalPost(updatedPost);
-      setComments(updatedPost.comments || []);
+      
+      // Load comments from localStorage, or set an empty array if not found
+      const storedComments = JSON.parse(localStorage.getItem(`comments-${post?.id}`)) || [];
+      setComments(storedComments);
     }
   }, [posts, post?.id]);
+
+  // Function to save comments to localStorage
+  const saveCommentsToLocalStorage = (comments) => {
+    localStorage.setItem(`comments-${post?.id}`, JSON.stringify(comments));
+  };
 
   const handlePostComment = () => {
     if (newComment.trim() === "") return;
 
     const newCommentData = {
-      id: Date.now(),
+      id: `user-${Date.now()}-${Math.random()}`, // Ensure uniqueness by combining Date.now and Math.random
       text: newComment,
+      profilePic: user
+        ? `https://api.dicebear.com/7.x/initials/svg?seed=${user.email}`
+        : "/default-avatar.png",
     };
 
-    setComments((prevComments) => [...prevComments, newCommentData]);
+    const updatedComments = [...comments, newCommentData];
+    setComments(updatedComments);
     setNewComment("");
+
+    // Save the updated comments to localStorage
+    saveCommentsToLocalStorage(updatedComments);
   };
 
   const handleUpvote = () => {
@@ -44,6 +64,7 @@ export default function PostModal({ post, onClose }) {
   if (!localPost) {
     return <div></div>;
   }
+
   return (
     <div
       className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50"
@@ -67,8 +88,7 @@ export default function PostModal({ post, onClose }) {
               <div
                 onClick={handleUpvote}
                 className={`flex flex-col items-center cursor-pointer text-black text-sm gap-1 border p-4 rounded-lg px-5
-                ${localPost.voted ? "bg-gray-100 border-blue-700" : "bg-white border-gray-200"}
-                `}
+                ${localPost.voted ? "bg-gray-100 border-blue-700" : "bg-white border-gray-200"}`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -109,11 +129,26 @@ export default function PostModal({ post, onClose }) {
         <div className="mt-4">
           <h3 className="text-2xl font-semibold mb-4">Comments</h3>
 
-          {comments.map((comment) => (
-            <div key={comment.id} className="bg-gray-100 p-4 rounded-md mb-4">
-              <p className="text-gray-700">💬 {comment.text}</p>
-            </div>
-          ))}
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div
+                key={comment.id}
+                className="bg-gray-100 p-4 rounded-md mb-4 flex items-start gap-3"
+              >
+                {/* Only show profile image for comments added in this session */}
+                {comment.profilePic && (
+                  <img
+                    src={comment.profilePic}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full border border-gray-300"
+                  />
+                )}
+                <p className="text-gray-700 flex-1">💬 {comment.text}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+          )}
 
           <div className="mt-6">
             <textarea

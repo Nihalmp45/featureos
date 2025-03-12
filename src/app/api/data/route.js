@@ -9,10 +9,6 @@ export async function GET(req) {
       lane: "AI Features", 
       upvotes: 42, 
       tags: ["AI/Tech", "Productivity"],
-      comments: [
-        { id: 1, text: "This would be amazing for debugging!", author: "Alice" },
-        { id: 2, text: "Will this support multiple programming languages?", author: "Bob" }
-      ]
     },
     { 
       id: 2, 
@@ -22,10 +18,6 @@ export async function GET(req) {
       lane: "UI/UX", 
       upvotes: 60, 
       tags: ["UI/UX"],
-      comments: [
-        { id: 1, text: "Dark mode is a game-changer! Can't wait for this.", author: "Charlie" },
-        { id: 2, text: "Will there be an option to auto-switch based on system settings?", author: "Dave" }
-      ]
     },
     {
       id: 3,
@@ -35,10 +27,6 @@ export async function GET(req) {
       lane: "Accessibility",
       upvotes: 35,
       tags: ["AI/Tech", "Productivity"],
-      comments: [
-        { id: 1, text: "This would make things so much easier for visually impaired users.", author: "Eva" },
-        { id: 2, text: "Will it support multiple languages?", author: "Frank" }
-      ]
     },
 
     // 🟡 IN PROGRESS
@@ -50,10 +38,6 @@ export async function GET(req) {
       lane: "Collaboration", 
       upvotes: 85, 
       tags: ["Productivity"],
-      comments: [
-        { id: 1, text: "Would love to see inline comments for better collaboration.", author: "Grace" },
-        { id: 2, text: "Will there be a live cursor tracking feature as well?", author: "Helen" }
-      ]
     },
     {
       id: 6,
@@ -63,10 +47,6 @@ export async function GET(req) {
       lane: "Project Management",
       upvotes: 72,
       tags: ["Productivity"],
-      comments: [
-        { id: 1, text: "I hope this includes customizable columns!", author: "Ian" },
-        { id: 2, text: "Will it allow task dependencies?", author: "Jack" }
-      ]
     },
     {
       id: 7,
@@ -76,10 +56,6 @@ export async function GET(req) {
       lane: "Marketing",
       upvotes: 50,
       tags: ["Productivity"],
-      comments: [
-        { id: 1, text: "Can we include dynamic fields in the templates?", author: "Kate" },
-        { id: 2, text: "Would love to see A/B testing support as well.", author: "Leo" }
-      ]
     },
 
     // ✅ COMPLETED
@@ -91,10 +67,6 @@ export async function GET(req) {
       lane: "Security", 
       upvotes: 120, 
       tags: ["Security"],
-      comments: [
-        { id: 1, text: "Great feature! Will there be backup codes as well?", author: "Maya" },
-        { id: 2, text: "Can I use an authenticator app instead of SMS?", author: "Noah" }
-      ]
     },
     {
       id: 10,
@@ -104,10 +76,6 @@ export async function GET(req) {
       lane: "Data Management",
       upvotes: 55,
       tags: ["Productivity"],
-      comments: [
-        { id: 1, text: "Will this support large data exports efficiently?", author: "Olivia" },
-        { id: 2, text: "Can we schedule automated exports?", author: "Peter" }
-      ]
     },
     {
       id: 11,
@@ -117,10 +85,6 @@ export async function GET(req) {
       lane: "Admin Features",
       upvotes: 95,
       tags: ["Security", "Productivity"],
-      comments: [
-        { id: 1, text: "Can we define role hierarchies?", author: "Quinn" },
-        { id: 2, text: "Is there an audit log for permission changes?", author: "Ryan" }
-      ]
     }
   ];
 
