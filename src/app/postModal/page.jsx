@@ -68,7 +68,7 @@ export default function PostModal({ post, onClose }) {
             {/* Title and Description */}
             <div className="flex-1">
               <h2 className="text-4xl font-bold">{post.title}</h2>
-              <p className="text-gray-500 text-lg">{post.description}</p>
+              <p className="text-gray-500 text-lg mt-2">{post.description}</p>
             </div>
           </div>
         </div>
