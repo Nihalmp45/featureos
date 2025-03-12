@@ -43,7 +43,7 @@ function SortablePostItem({ post, onUpvote, onClick }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-white p-3 rounded-md mb-3 border border-gray-200 shadow-sm flex items-center gap-4 sm:gap-6 cursor-pointer touch-manipulation"
+      className="bg-white p-3 rounded-md mb-3 border border-gray-200 shadow-sm flex items-center gap-4 sm:gap-6 cursor-grab touch-manipulation"
       onClick={(e) => {
         // Only trigger click if not dragging
         if (!transform) {

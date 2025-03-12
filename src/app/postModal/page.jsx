@@ -66,7 +66,7 @@ export default function PostModal({ post, onClose }) {
             <div className="flex items-center">
               <div
                 onClick={handleUpvote}
-                className={`flex flex-col items-center text-black text-sm gap-1 border p-4 rounded-lg px-5 cursor-pointer
+                className={`flex flex-col items-center cursor-pointer text-black text-sm gap-1 border p-4 rounded-lg px-5
                 ${localPost.voted ? "bg-gray-100 border-blue-700" : "bg-white border-gray-200"}
                 `}
               >
