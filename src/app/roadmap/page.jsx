@@ -150,9 +150,9 @@ export default function Roadmap({ selectedTag }) {
 
   // Define lanes (status categories)
   const lanes = [
-    { id: "Planned", name: "Planned", color: "text-pink-500", icon: { url: "icon-url", color: "#EC4899" } },
-    { id: "In Progress", name: "In Progress", color: "text-yellow-500", icon: { url: "icon-url", color: "#FFAA00" } },
-    { id: "Completed", name: "Completed", color: "text-green-500", icon: { url: "icon-url", color: "#059669" } },
+    { id: "Planned", name: "Planned", color: "text-pink-500", icon: { url: "https://assets.production.skcript.com/featureos/app-assets/icons/bold/crosshair-bold.svg", color: "#EC4899" } },
+    { id: "In Progress", name: "In Progress", color: "text-yellow-500", icon: { url: "https://assets.production.skcript.com/featureos/app-assets/icons/bold/cooking-pot-bold.svg", color: "#FFAA00" } },
+    { id: "Completed", name: "Completed", color: "text-green-500", icon: { url: "https://assets.production.skcript.com/featureos/app-assets/icons/bold/flag-checkered-bold.svg", color: "#059669" } },
   ];
 
   // Function to find the lane for a given post
