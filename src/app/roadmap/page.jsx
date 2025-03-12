@@ -12,13 +12,13 @@ import {
   DragOverlay
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import usePostStore  from "../api/store/store"
 
 const fetchPosts = async () => {
   const response = await fetch("/api/data");
@@ -106,21 +106,21 @@ function DroppableLane({ laneName, status, color, icon, posts, onUpvote, onPostC
       className="border-[1px] bg-gray-100 border-gray-100 rounded-lg p-4 shadow-md min-h-[200px]"
     >
       <h2
-        className={`font-bold text-lg mb-4 ${color} border-b-4 border-gray-100 pb-1 flex items-center gap-2 w-full`}
-      >
-        {icon && (
-          <div
-            style={{
-              background: icon.color,
-              mask: `url(${icon.url}) no-repeat center / contain`,
-              WebkitMask: `url(${icon.url}) no-repeat center / contain`,
-              height: "14px",
-              width: "14px",
-            }}
-          ></div>
-        )}
-        {laneName}
-      </h2>
+  className={`font-bold text-lg mb-4 ${color} border-b-[2px] border-gray-200 pb-1 flex items-center gap-2 w-full`}
+>
+  {icon && (
+    <div
+      style={{
+        background: icon.color,
+        mask: `url(${icon.url}) no-repeat center / contain`,
+        WebkitMask: `url(${icon.url}) no-repeat center / contain`,
+        height: "14px",
+        width: "14px",
+      }}
+    ></div>
+  )}
+  {laneName}
+</h2>
       
       {posts.length > 0 ? (
         <SortableContext items={posts.map(post => post.id)} strategy={verticalListSortingStrategy}>
@@ -141,12 +141,13 @@ function DroppableLane({ laneName, status, color, icon, posts, onUpvote, onPostC
 }
 
 export default function Roadmap() {
+  
   const { data, error, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
 
-  const [localPosts, setLocalPosts] = useState([]);
+  const { posts: localPosts, setPosts, updatePostStatus, upvotePost } = usePostStore();
   const [votedPosts, setVotedPosts] = useState(new Set());
   const [selectedPost, setSelectedPost] = useState(null);
   const [activeId, setActiveId] = useState(null);
@@ -164,26 +165,19 @@ export default function Roadmap() {
   );
 
   useEffect(() => {
-    if (data) setLocalPosts(data);
-  }, [data]);
+    if (data) setPosts(data);
+}, [data, setPosts]);
 
-  const handleUpvote = (id) => {
-    if (votedPosts.has(id)) {
-      toast.error("You can only vote once for this post!");
-      return;
-    }
+const handleUpvote = (id) => {
+  if (votedPosts.has(id)) {
+    toast.error("You can only vote once for this post!");
+    return;
+  }
 
-    setLocalPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === id
-          ? { ...post, upvotes: post.upvotes + 1, voted: true }
-          : post
-      )
-    );
-
-    setVotedPosts((prev) => new Set(prev).add(id));
-    toast.success("Voted successfully!");
-  };
+  upvotePost(id);  // <-- Correctly updates Zustand store
+  setVotedPosts((prev) => new Set(prev).add(id));
+  toast.success("Voted successfully!");
+};
 
   const handlePostClick = (post) => {
     setSelectedPost(post);
@@ -253,13 +247,7 @@ export default function Roadmap() {
     
     if (activeContainer !== overContainer) {
       // Update the post's status
-      setLocalPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === active.id
-            ? { ...post, status: overContainer }
-            : post
-        )
-      );
+      updatePostStatus(active.id, overContainer);
       
       // Show success notification
       const post = localPosts.find(p => p.id === active.id);

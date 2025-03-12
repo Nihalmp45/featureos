@@ -1,15 +1,21 @@
 import { create } from 'zustand';
 
-const useRoadmapStore = create((set) => ({
-  planned: [],
-  inProgress: [],
-  completed: [],
-  
-  setAllData: (groupedData) => {
-    const { planned, inProgress, completed } = groupedData;
-
-    set({ planned, inProgress, completed });
-}
+const usePostStore = create((set) => ({
+  posts: [],
+  setPosts: (posts) => set({ posts }),
+  updatePostStatus: (id, newStatus) =>
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post.id === id ? { ...post, status: newStatus } : post
+      ),
+    })),
+  upvotePost: (id) =>
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post.id === id
+          ? { ...post, upvotes: post.upvotes + 1, voted: true }
+          : post
+      ),
+    })),
 }));
-
-export default useRoadmapStore;
+export default usePostStore
